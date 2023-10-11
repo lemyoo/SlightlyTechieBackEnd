@@ -86,5 +86,22 @@ namespace SlightlyTechieBackEnd.Services.BlogsRepository
                 return blog;
             }
         }
+
+        public void UpdateBlog(string id, DataModel data)
+        {
+            var blog = GetBlogsById(id);
+            if (blog != null ) 
+            { 
+                blog.Title = data.Title;
+                blog.Description = data.Description;
+                blog.Author = data.Author;
+
+                using (var context = new ApiContext())
+                {
+                    context.Blogs.Update(blog);
+                    context.SaveChanges();
+                }
+            } else return;
+        }
     }
 }

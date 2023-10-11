@@ -11,5 +11,7 @@ namespace SlightlyTechieBackEnd.Services.BlogsRepository
         public void AddBlog(DataModel data);
 
         public void DeleteBlog(string id);
+
+        public void UpdateBlog(string id, DataModel data);
     }
 }

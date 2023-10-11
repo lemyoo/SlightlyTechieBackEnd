@@ -47,8 +47,9 @@ namespace SlightlyTechieBackEnd.Controllers
 
         // PUT api/<BlogController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void Put(string id, [FromBody] DataModel data)
         {
+            _blogsRepostory.UpdateBlog(id, data);
         }
 
         
