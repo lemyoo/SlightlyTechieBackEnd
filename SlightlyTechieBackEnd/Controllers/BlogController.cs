@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SlightlyTechieBackEnd.Models;
+using SlightlyTechieBackEnd.Services.BlogsRepository;
 
 namespace SlightlyTechieBackEnd.Controllers
 {
@@ -6,9 +8,9 @@ namespace SlightlyTechieBackEnd.Controllers
     [ApiController]
     public class BlogController : ControllerBase
     {
-        readonly IBlogsRepository _blogsRepostory;
+        readonly IBlogsRepositoryService _blogsRepostory;
 
-        public BlogController(IBlogsRepository blogsRepostory)
+        public BlogController(IBlogsRepositoryService blogsRepostory)
         {
             _blogsRepostory = blogsRepostory;
         }
@@ -20,17 +22,27 @@ namespace SlightlyTechieBackEnd.Controllers
             return Ok(_blogsRepostory.GetBlogs());
         }
 
-        // GET api/<BlogController>/5
+       
         [HttpGet("{id}")]
-        public string Get(int id)
+        public ActionResult<Models.Blog> Get(string id)
         {
-            return "value";
+            var data = _blogsRepostory.GetBlogsById(id);
+            if(data == null)
+            {
+                return NotFound("Blog was not found with Id ="+id);
+            }
+            else
+            {
+                return Ok(data);
+            }
+           
         }
-
-        // POST api/<BlogController>
+       
+        
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] DataModel data)
         {
+            _blogsRepostory.AddBlog(data);
         }
 
         // PUT api/<BlogController>/5
@@ -39,10 +51,11 @@ namespace SlightlyTechieBackEnd.Controllers
         {
         }
 
-        // DELETE api/<BlogController>/5
+        
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public void Delete(string id)
         {
+            _blogsRepostory.DeleteBlog(id);
         }
     }
 }
